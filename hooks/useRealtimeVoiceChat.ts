@@ -188,6 +188,17 @@ export function useRealtimeVoiceChat({
     onNeedsFallbackRef.current?.(reason)
   }, [clearStartupTimer])
 
+  const handleAssistantAudioError = useCallback((error: unknown) => {
+    console.error('[VOICE LIVE] Assistant audio playback failed:', error)
+    clearPlaybackQueue()
+    ignoreAssistantAudioRef.current = false
+    assistantTranscriptRef.current = ''
+    assistantTextFallbackRef.current = ''
+    setAssistantTranscript('')
+    setState('processing')
+    triggerFallback('Realtime assistant audio failed')
+  }, [clearPlaybackQueue, triggerFallback])
+
   const ensurePlaybackSource = useCallback(async () => {
     const ctx = getAudioContext()
     if (ctx.state === 'suspended') {
@@ -216,30 +227,34 @@ export function useRealtimeVoiceChat({
       return
     }
 
-    const bytes = Buffer.from(base64, 'base64')
-    const ctx = getAudioContext()
-    const queueSource = await ensurePlaybackSource()
+    try {
+      const bytes = Buffer.from(base64, 'base64')
+      const ctx = getAudioContext()
+      const queueSource = await ensurePlaybackSource()
 
-    let audioBuffer: any
-    if (mimeType?.includes('audio/pcm')) {
-      const sampleRate = parseSampleRateFromMimeType(mimeType)
-      const float32 = pcm16ToFloat32(bytes)
-      audioBuffer = ctx.createBuffer(1, float32.length, sampleRate)
-      audioBuffer.copyToChannel(float32, 0)
-    } else {
-      audioBuffer = await ctx.decodeAudioData(bytes.buffer.slice(
-        bytes.byteOffset,
-        bytes.byteOffset + bytes.byteLength,
-      ))
-    }
+      let audioBuffer: any
+      if (mimeType?.includes('audio/pcm')) {
+        const sampleRate = parseSampleRateFromMimeType(mimeType)
+        const float32 = pcm16ToFloat32(bytes)
+        audioBuffer = ctx.createBuffer(1, float32.length, sampleRate)
+        audioBuffer.copyToChannel(float32, 0)
+      } else {
+        audioBuffer = await ctx.decodeAudioData(bytes.buffer.slice(
+          bytes.byteOffset,
+          bytes.byteOffset + bytes.byteLength,
+        ))
+      }
 
-    queueSource.enqueueBuffer(audioBuffer)
-    if (!playbackStartedRef.current) {
-      playbackStartedRef.current = true
-      setState('speaking')
-      queueSource.start()
+      queueSource.enqueueBuffer(audioBuffer)
+      if (!playbackStartedRef.current) {
+        playbackStartedRef.current = true
+        setState('speaking')
+        queueSource.start()
+      }
+    } catch (error) {
+      handleAssistantAudioError(error)
     }
-  }, [ensurePlaybackSource, getAudioContext])
+  }, [ensurePlaybackSource, getAudioContext, handleAssistantAudioError])
 
   const executeToolCall = useCallback(async (call: RealtimeFunctionCall) => {
     if (call.name === 'ask_user') {
@@ -361,7 +376,12 @@ export function useRealtimeVoiceChat({
 
         const inlineData = part?.inlineData
         if (inlineData?.data) {
-          await enqueueAssistantAudio(inlineData.data, inlineData.mimeType)
+          try {
+            await enqueueAssistantAudio(inlineData.data, inlineData.mimeType)
+          } catch (error) {
+            handleAssistantAudioError(error)
+            return
+          }
         }
       }
     }
@@ -511,7 +531,10 @@ export function useRealtimeVoiceChat({
         callbacks: {
           onopen: () => {},
           onmessage: (event: any) => {
-            void handleServerMessage(event)
+            void handleServerMessage(event).catch(error => {
+              console.error('[VOICE LIVE] Failed to process server message:', error)
+              handleAssistantAudioError(error)
+            })
           },
           onerror: (event: any) => {
             console.error('[VOICE LIVE] Socket error:', event)
@@ -548,6 +571,7 @@ export function useRealtimeVoiceChat({
   }, [
     clearPlaybackQueue,
     clearStartupTimer,
+    handleAssistantAudioError,
     handleServerMessage,
     startMicrophone,
     stopMicrophone,

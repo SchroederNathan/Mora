@@ -181,7 +181,8 @@ export function useVoiceChat({
           prefetchTextRef.current = ''
           prefetchPromiseRef.current = null
         }
-        throw error
+        console.warn('[VOICE] Speech prefetch failed:', error)
+        return null
       })
   }, [fetchSpeechAudioBuffer])
 
