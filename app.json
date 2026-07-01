@@ -7,26 +7,11 @@
     "orientation": "portrait",
     "icon": "./assets/icons/ios-light.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/icons/splash-icon-light.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "icon": {
         "light": "./assets/icons/ios-light.png",
         "dark": "./assets/icons/ios-dark.png",
         "tinted": "./assets/icons/ios-tinted.png"
-      },
-      "splash": {
-        "image": "./assets/icons/splash-icon-light.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "image": "./assets/icons/splash-icon-dark.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.schroedernathan.mora",
@@ -42,16 +27,6 @@
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/icons/adaptive-icon.png"
-      },
-      "splash": {
-        "image": "./assets/icons/splash-icon-light.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "image": "./assets/icons/splash-icon-dark.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
       },
       "package": "com.schroedernathan.mora",
       "permissions": [
@@ -93,6 +68,19 @@
         "react-native-audio-api",
         {
           "iosMicrophonePermission": "Allow Mora to use your microphone for voice food logging."
+        }
+      ],
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/icons/splash-icon-light.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "image": "./assets/icons/splash-icon-dark.png",
+            "backgroundColor": "#000000"
+          }
         }
       ]
     ],
