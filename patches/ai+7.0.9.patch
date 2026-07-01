@@ -1,0 +1,32 @@
+diff --git a/node_modules/ai/dist/index.js b/node_modules/ai/dist/index.js
+index 0bd6f51..a7a70ae 100644
+--- a/node_modules/ai/dist/index.js
++++ b/node_modules/ai/dist/index.js
+@@ -4057,9 +4057,8 @@ async function loadDiagnosticsChannel() {
+     return void 0;
+   }
+   if (diagnosticsChannelPromise == null) {
+-    diagnosticsChannelPromise = import(
+-      /* webpackIgnore: true */
+-      "diagnostics_channel"
++    diagnosticsChannelPromise = Promise.resolve(
++      globalThis.process?.getBuiltinModule?.("diagnostics_channel")
+     ).catch(() => void 0);
+   }
+   return diagnosticsChannelPromise;
+diff --git a/node_modules/ai/dist/internal/index.js b/node_modules/ai/dist/internal/index.js
+index fd9cba2..ef25bc2 100644
+--- a/node_modules/ai/dist/internal/index.js
++++ b/node_modules/ai/dist/internal/index.js
+@@ -2349,9 +2349,8 @@ async function loadDiagnosticsChannel() {
+     return void 0;
+   }
+   if (diagnosticsChannelPromise == null) {
+-    diagnosticsChannelPromise = import(
+-      /* webpackIgnore: true */
+-      "diagnostics_channel"
++    diagnosticsChannelPromise = Promise.resolve(
++      globalThis.process?.getBuiltinModule?.("diagnostics_channel")
+     ).catch(() => void 0);
+   }
+   return diagnosticsChannelPromise;

@@ -1,10 +1,9 @@
 const { getDefaultConfig } = require('expo/metro-config');
-const { mergeConfig } = require('metro-config');
-const { bundleModeMetroConfig } = require('react-native-worklets/bundleMode');
+const { getBundleModeMetroConfig } = require('react-native-worklets/bundleMode');
 
 let config = getDefaultConfig(__dirname);
 
-// Watch the .worklets/ output directory
+// Watch the react-native-worklets Bundle Mode output directory
 config.watchFolders.push(
   require('path').resolve(
     __dirname,
@@ -12,20 +11,10 @@ config.watchFolders.push(
   )
 );
 
-// Resolve react-native-worklets/.worklets/* via the Bundle Mode resolver
-const defaultResolver = config.resolver.resolveRequest;
-
-config = mergeConfig(config, bundleModeMetroConfig);
-
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-  if (moduleName.startsWith('react-native-worklets/.worklets/')) {
-    return bundleModeMetroConfig.resolver.resolveRequest(
-      context,
-      moduleName,
-      platform
-    );
-  }
-  return defaultResolver(context, moduleName, platform);
-};
+// Apply the official Bundle Mode Metro setup (resolver + .worklets module-id
+// factory + inlineRequires). This replaces the previous hand-rolled resolver,
+// which crashed `expo export` (`defaultResolver is not a function`) and was
+// missing the module-id factory needed to bundle the generated .worklets files.
+config = getBundleModeMetroConfig(config);
 
 module.exports = config;
