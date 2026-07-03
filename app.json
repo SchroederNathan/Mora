@@ -57,9 +57,6 @@
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ]
     },
@@ -96,18 +93,18 @@
         }
       ]
     ],
-    "owner": "schroedernathan",
+    "owner": "exponathan",
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "0ebd281d-28ed-45f7-bc02-a804c4a3e937"
+        "projectId": "1ca90c8a-c75a-4785-b8a2-6842ca72c2e6"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/0ebd281d-28ed-45f7-bc02-a804c4a3e937"
+      "url": "https://u.expo.dev/1ca90c8a-c75a-4785-b8a2-6842ca72c2e6"
     }
   }
 }

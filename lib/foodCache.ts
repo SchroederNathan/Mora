@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { serverRealtimeOptions } from './serverRealtime';
 
 // ---------------------------------------------------------------------------
 // Server-side Supabase client (service role — bypasses RLS)
@@ -8,7 +9,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const serviceClient =
   supabaseUrl && supabaseServiceKey
-    ? createClient(supabaseUrl, supabaseServiceKey)
+    ? createClient(supabaseUrl, supabaseServiceKey, serverRealtimeOptions)
     : null;
 
 // ---------------------------------------------------------------------------

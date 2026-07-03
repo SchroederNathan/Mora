@@ -1,11 +1,18 @@
 import Constants from 'expo-constants';
 
 export const generateAPIUrl = (relativePath: string) => {
-  const origin = Constants.experienceUrl?.replace('exp://', 'http://') || 'http://192.168.1.19:8081';
-
   const path = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
 
   if (process.env.NODE_ENV === 'development') {
+    // hostUri is set by the dev client / Expo Go and tracks the Metro server
+    // actually serving this session; experienceUrl can be undefined or stale.
+    const hostUri = Constants.expoConfig?.hostUri;
+    const origin = hostUri
+      ? `http://${hostUri}`
+      : Constants.experienceUrl?.replace('exp://', 'http://');
+    if (!origin) {
+      throw new Error('Unable to determine the dev server origin for API routes');
+    }
     return origin.concat(path);
   }
 

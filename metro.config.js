@@ -1,31 +1,23 @@
+const fs = require('fs');
+const path = require('path');
 const { getDefaultConfig } = require('expo/metro-config');
-const { mergeConfig } = require('metro-config');
-const { bundleModeMetroConfig } = require('react-native-worklets/bundleMode');
+const { getBundleModeMetroConfig } = require('react-native-worklets/bundleMode');
+const { withUniwindConfig } = require('uniwind/metro');
 
-let config = getDefaultConfig(__dirname);
-
-// Watch the .worklets/ output directory
-config.watchFolders.push(
-  require('path').resolve(
-    __dirname,
-    'node_modules/react-native-worklets/.worklets'
-  )
+// Worklets Bundle Mode emits generated modules here mid-build; the directory
+// must exist before Metro starts or fresh installs (EAS) fail to watch it.
+fs.mkdirSync(
+  path.resolve(__dirname, 'node_modules/react-native-worklets/.worklets'),
+  { recursive: true }
 );
 
-// Resolve react-native-worklets/.worklets/* via the Bundle Mode resolver
-const defaultResolver = config.resolver.resolveRequest;
+// getBundleModeMetroConfig wires the resolver + serializer for
+// react-native-worklets/.worklets/* — no custom resolveRequest needed.
+const config = getBundleModeMetroConfig(getDefaultConfig(__dirname));
 
-config = mergeConfig(config, bundleModeMetroConfig);
-
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-  if (moduleName.startsWith('react-native-worklets/.worklets/')) {
-    return bundleModeMetroConfig.resolver.resolveRequest(
-      context,
-      moduleName,
-      platform
-    );
-  }
-  return defaultResolver(context, moduleName, platform);
-};
-
-module.exports = config;
+// withUniwindConfig must stay the outermost wrapper (uniwind docs) — it
+// compiles globals.css classNames; without it every className is dropped.
+module.exports = withUniwindConfig(config, {
+  cssEntryFile: './globals.css',
+  dtsFile: './app/uniwind-types.d.ts',
+});
