@@ -6,34 +6,65 @@
   --font-serif: 'Sentient Variable';
 }
 
-/* Colors are synced with constants/colors.ts */
 @layer theme {
-    :root {
-        @variant dark {
-            --color-background: #0a0a0a;
-            --color-foreground: #f5f5f5;
-            --color-primary: #3b82f6;
-            --color-primary-border: oklch(75% 0.183 55.934);
-            --color-muted: #a3a3a3;
-            --color-chat: oklch(20.5% 0 0);
-            --color-muted-foreground: oklch(26.9% 0 0);
-            --color-card: #111111;
-            --color-border: oklch(26.9% 0 0);
-            --color-user-bubble: #1e3a8a;
-
-        }
-
-        @variant light {
-            --color-background: #fafafa;
-            --color-foreground: #0a0a0a;
-            --color-primary: #2563eb;
-            --color-primary-border: oklch(75% 0.183 55.934);
-            --color-chat: #f0f0f0;
-            --color-muted: #f4f4f5;
-            --color-muted-foreground: #71717a;
-            --color-card: #ffffff;
-            --color-border: #e4e4e7;
-            --color-user-bubble: #2563eb;
-        }
+  :root {
+    @variant light {
+      --color-background: #fafafa;
+      --color-foreground: #17181c;
+      --color-primary: #2563eb;
+      --color-muted: #f0f1f4;
+      --color-muted-foreground: #666a75;
+      --color-card: #ffffff;
+      --color-border: #e4e6eb;
+      --color-user-bubble: #2563eb;
+      --color-chat: #eff3fb;
+      --color-link: #2563eb;
+      --color-code-text: #db2777;
+      --color-code-background: #f4f4f5;
+      --color-code-border: #e4e4e7;
+      --color-blockquote-background: #f8fafc;
+      --color-blockquote-border: #2563eb;
+      --color-blockquote-text: #71717a;
+      --color-bullet-color: #2563eb;
+      --color-suggestion-card: #f5f0e8;
+      --color-suggestion-card-text: #44403c;
+      --color-primary-border: #bfdbfe;
+      --color-on-primary: #ffffff;
+      --color-success: #268260;
+      --color-danger: #c73d4d;
+      --color-protein: #b55378;
+      --color-carbs: #a87632;
+      --color-fat: #477fc1;
+      --color-overlay: #00000066;
     }
+    @variant dark {
+      --color-background: #101114;
+      --color-foreground: #f4f5f8;
+      --color-primary: #82aaff;
+      --color-primary-border: #324d85;
+      --color-muted: #25272e;
+      --color-muted-foreground: #a4a8b3;
+      --color-card: #1b1d23;
+      --color-border: #30333d;
+      --color-user-bubble: #2455bc;
+      --color-chat: #202b43;
+      --color-link: #60a5fa;
+      --color-code-text: #f472b6;
+      --color-code-background: #27272a;
+      --color-code-border: #3f3f46;
+      --color-blockquote-background: #18181b;
+      --color-blockquote-border: #60a5fa;
+      --color-blockquote-text: #a1a1aa;
+      --color-bullet-color: #60a5fa;
+      --color-suggestion-card: #3d3a36;
+      --color-suggestion-card-text: #e7e5e4;
+      --color-on-primary: #101b33;
+      --color-success: #78ceaa;
+      --color-danger: #ff94a0;
+      --color-protein: #eda8c2;
+      --color-carbs: #e2bb7d;
+      --color-fat: #95bcf0;
+      --color-overlay: #00000099;
+    }
+  }
 }

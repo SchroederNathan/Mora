@@ -7,26 +7,11 @@
     "orientation": "portrait",
     "icon": "./assets/icons/ios-light.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/icons/splash-icon-light.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "icon": {
         "light": "./assets/icons/ios-light.png",
         "dark": "./assets/icons/ios-dark.png",
         "tinted": "./assets/icons/ios-tinted.png"
-      },
-      "splash": {
-        "image": "./assets/icons/splash-icon-light.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "image": "./assets/icons/splash-icon-dark.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.schroedernathan.mora",
@@ -42,16 +27,6 @@
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/icons/adaptive-icon.png"
-      },
-      "splash": {
-        "image": "./assets/icons/splash-icon-light.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "image": "./assets/icons/splash-icon-dark.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
       },
       "package": "com.schroedernathan.mora",
       "permissions": [
@@ -91,7 +66,43 @@
         {
           "iosMicrophonePermission": "Allow Mora to use your microphone for voice food logging."
         }
-      ]
+      ],
+      "expo-status-bar",
+      "expo-sharing",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/icons/splash-icon-light.png",
+          "imageWidth": 180,
+          "backgroundColor": "#fafafa",
+          "dark": {
+            "image": "./assets/icons/splash-icon-dark.png",
+            "backgroundColor": "#101114"
+          }
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Mora to scan food barcodes."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Mora to attach food photos.",
+          "cameraPermission": "Allow Mora to photograph your meals."
+        }
+      ],
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Mora imports your steps, active calories, and weight when you choose to sync Apple Health.",
+          "NSHealthUpdateUsageDescription": "Mora uses Health data to help you track your daily balance.",
+          "background": false
+        }
+      ],
+      "./plugins/with-healthkit-swift"
     ],
     "owner": "exponathan",
     "extra": {
@@ -101,10 +112,14 @@
       }
     },
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "fingerprint"
     },
     "updates": {
       "url": "https://u.expo.dev/1ca90c8a-c75a-4785-b8a2-6842ca72c2e6"
+    },
+    "experiments": {
+      "reactCompiler": true,
+      "typedRoutes": true
     }
   }
 }
